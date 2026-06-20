@@ -28,7 +28,7 @@ Every deliverable
    ▼             ▼
 return      ┌──────────────┐
 determin-   │  Fireworks   │
-istic       │  Kimi K2.7   │
+istic       │  deepseek-v4-flash│
 result      │  analyzeComp │
             │  liance()    │
             └──────┬───────┘
