@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment — never commit real keys
+.env
+.env.local
+.env.*.local
+
+# Runtime data — deliverables.json is seeded at runtime, not committed
+data/deliverables.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# TypeScript
+*.tsbuildinfo

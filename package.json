@@ -1,0 +1,25 @@
+{
+  "name": "bnh-agentic-pm-compliance",
+  "version": "1.0.0",
+  "description": "Agentic PM Compliance Monitoring System for Brendan Nicholas Holdings (Scenario B)",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/index.js",
+    "test": "npm run build && node dist/tests/agent.test.js && node dist/tests/e2e.test.js",
+    "test:e2e": "npm run build && node dist/tests/e2e.test.js",
+    "test:llm": "npm run build && node dist/lib/llm-agent.test.js",
+    "test:hybrid": "npm run build && node dist/agent-hybrid.test.js",
+    "test:all": "npm run build && node dist/tests/agent.test.js && node dist/tests/e2e.test.js && node dist/lib/llm-agent.test.js && node dist/agent-hybrid.test.js"
+  },
+  "keywords": ["agentic", "compliance", "pm", "monitoring"],
+  "author": "Scenario B Candidate",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "@types/node": "^20.0.0"
+  }
+}
