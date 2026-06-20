@@ -59,40 +59,30 @@ export interface LLMInvocationResult {
 // Grounded in BNH institutional context. Source discipline mirrors Scenario C.
 // ---------------------------------------------------------------------------
 
-const SYSTEM_PROMPT = `You are the LLM Compliance Reasoning Engine for Brendan Nicholas Holdings (BNH), a Nigerian permanent-capital holding company. You assist the deterministic PM Compliance Monitor by analysing edge cases that fall outside clear rule boundaries.
+// SCENARIO B - ENHANCED - SYSTEM PROMPT
+// Kept intentionally compact for kimi-k2p7-code (reasoning model).
+// A long prompt causes the model to leak its chain-of-thought into content.
+// All governance context is in the user message via formatContextAsPrompt().
+const SYSTEM_PROMPT = `You are a JSON API for BNH compliance assessment. Output ONLY a raw JSON object — no prose, no markdown, no explanation, no text before or after the JSON.
 
-ROLE BOUNDARIES
-You are NOT the primary decision engine. The deterministic rules engine has already assessed this deliverable and flagged it as an edge case requiring nuanced reasoning. Your job is to provide a second opinion with calibrated confidence — not to override the rules engine, but to inform it.
+Rules:
+- Reason ONLY from facts in the input. Do not infer missing fields.
+- Do not speculate about personal circumstances (NDPR).
+- assessedAt must be a current ISO 8601 datetime.
 
-SOURCE DISCIPLINE
-You may ONLY reason about facts provided in the input context object. Do not speculate about BNH's internal policies, Nigerian law, market conditions, or personal circumstances of Portfolio Managers beyond what the input states. If a field is absent, treat it as unknown — do not infer it.
+Assessment values: COMPLIANT | AT_RISK | LATE | MALFORMED_DATA
+recommendedAction values: NONE | WARN | ESCALATE
+confidence: 0.0–1.0 (0.95=certain, 0.80=high, 0.65=moderate, 0.50=unsure)
 
-NDPR AWARENESS
-Do not speculate about personal circumstances, health, or private reasons for a PM's submission behaviour. Reason only about observable facts: deadlines, submission timestamps, and stated notes.
-
-ASSESSMENT CRITERIA
-- COMPLIANT: submitted on or before deadline, or within acceptable tolerance stated in notes.
-- AT_RISK: not yet submitted, deadline within 3 days, no override in effect.
-- LATE: deadline has passed, not submitted, no override in effect.
-- MALFORMED_DATA: deadline or submission data is ambiguous, missing, or unparseable.
-
-CONFIDENCE CALIBRATION
-0.95 = certain based on clear, unambiguous facts in the input.
-0.80 = high confidence, minor ambiguity present.
-0.65 = moderate confidence, meaningful uncertainty.
-0.50 = unsure — flag uncertainties clearly.
-Never report confidence above 0.90 if any field relevant to the assessment is missing or ambiguous.
-
-OUTPUT FORMAT
-Respond ONLY in valid JSON matching this exact schema — no prose, no markdown, no explanation outside the JSON:
+Required output schema — start with { and end with }:
 {
-  "deliverableId": "string",
-  "assessment": "COMPLIANT" | "AT_RISK" | "LATE" | "MALFORMED_DATA",
-  "reasoning": "string (10–500 chars, declarative, institutional register)",
-  "confidence": number (0.0–1.0),
-  "recommendedAction": "NONE" | "WARN" | "ESCALATE",
-  "uncertainties": "string (optional — only if confidence < 0.80)",
-  "analyzedAt": "ISO 8601 datetime string"
+  "deliverableId": "<string>",
+  "assessment": "<COMPLIANT|AT_RISK|LATE|MALFORMED_DATA>",
+  "reasoning": "<10–500 chars, declarative>",
+  "confidence": <0.0–1.0>,
+  "recommendedAction": "<NONE|WARN|ESCALATE>",
+  "uncertainties": "<optional, only if confidence < 0.80>",
+  "analyzedAt": "<ISO 8601>"
 }`;
 
 // ---------------------------------------------------------------------------
@@ -131,7 +121,7 @@ function loadConfig(): FireworksConfig {
       "https://api.fireworks.ai/inference/v1",
     modelId:
       process.env.FIREWORKS_MODEL_ID ??
-      "accounts/fireworks/models/kimi-k2-7",
+      "accounts/fireworks/models/kimi-k2p7-code",
     temperature: parseFloat(process.env.LLM_TEMPERATURE ?? "0.3"),
     maxTokens: parseInt(process.env.LLM_MAX_TOKENS ?? "250", 10),
     topP: parseFloat(process.env.LLM_TOP_P ?? "0.85"),
@@ -155,8 +145,10 @@ export class FireworksLLMClient {
   }
 
   // SCENARIO B - ENHANCED - LLM INTEGRATION — format context as user message
+  // BNH context is in the user message, not the system prompt, so the
+  // reasoning model sees it as part of the problem to solve.
   formatContextAsPrompt(context: LLMComplianceContext): string {
-    return `Analyse the following PM deliverable compliance context and respond in the required JSON schema.\n\n${JSON.stringify(context, null, 2)}`;
+    return `BNH PM Compliance Assessment\n\nContext:\n${JSON.stringify(context, null, 2)}\n\nAssess this deliverable and output ONLY the JSON object.`;
   }
 
   // SCENARIO B - ENHANCED - LLM INTEGRATION — main invocation method
@@ -196,10 +188,18 @@ export class FireworksLLMClient {
           body: JSON.stringify({
             model: this.cfg.modelId,
             temperature: this.cfg.temperature,
-            max_tokens: this.cfg.maxTokens,
+            // SCENARIO B - ENHANCED - LLM INTEGRATION
+            // kimi-k2p7-code is a reasoning model: its chain-of-thought
+            // consumes tokens before the JSON output. 1500 gives enough
+            // headroom for reasoning + the ~250-token JSON response.
+            max_tokens: 1500,
             top_p: this.cfg.topP,
             frequency_penalty: this.cfg.frequencyPenalty,
             presence_penalty: this.cfg.presencePenalty,
+            // response_format forces the API to extract only the JSON
+            // object from the full completion, bypassing any prose preamble
+            // the reasoning model emits before reaching its conclusion.
+            response_format: { type: "json_object" },
             messages: [
               { role: "system", content: SYSTEM_PROMPT },
               {
@@ -235,10 +235,17 @@ export class FireworksLLMClient {
         tokensUsed.input * COST_PER_INPUT_TOKEN +
         tokensUsed.output * COST_PER_OUTPUT_TOKEN;
 
-      // Parse and validate the JSON response from the model
+      // Parse and validate the JSON response from the model.
+      // SCENARIO B - ENHANCED - LLM INTEGRATION — JSON extraction
+      // Some model variants prepend prose before the JSON object. Extract
+      // the first {...} block before attempting to parse so a preamble
+      // like "Here is the result: {...}" still yields valid output.
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      const jsonStr = jsonMatch ? jsonMatch[0] : content;
+
       let parsed: unknown;
       try {
-        parsed = JSON.parse(content);
+        parsed = JSON.parse(jsonStr);
       } catch {
         const reason = `LLM response is not valid JSON: ${content.slice(0, 120)}`;
         this.auditFailure(context.deliverableId, reason, latencyMs);
