@@ -87,7 +87,7 @@ cp .env.template .env
 # Add your Fireworks API key and optional override values
 # FIREWORKS_API_KEY=fw_...
 # FIREWORKS_API_BASE_URL=https://api.fireworks.ai/inference/v1
-# FIREWORKS_MODEL_ID=accounts/fireworks/models/kimi-k2-7
+# FIREWORKS_MODEL_ID=accounts/fireworks/models/deepseek-v4-flash
 ```
 
 ## Environment Variables
@@ -96,7 +96,7 @@ cp .env.template .env
 | -------------------------- | --------------------------------------- | ------------------------------------------------- |
 | `FIREWORKS_API_KEY`        | —                                       | Required                                          |
 | `FIREWORKS_API_BASE_URL`   | `https://api.fireworks.ai/inference/v1` | Fireworks inference API base URL                  |
-| `FIREWORKS_MODEL_ID`       | `accounts/fireworks/models/kimi-k2-7`   | Model identifier                                  |
+| `FIREWORKS_MODEL_ID`       | `accounts/fireworks/models/deepseek-v4-flash` | Model identifier                                  |
 | `LLM_TEMPERATURE`          | `0.3`                                   | Low temperature for deterministic-leaning outputs |
 | `LLM_MAX_TOKENS`           | `250`                                   | Capped to keep responses concise and cost-bounded |
 | `LLM_TOP_P`                | `0.85`                                  | Nucleus sampling                                  |

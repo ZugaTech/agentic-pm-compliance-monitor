@@ -1,5 +1,5 @@
 // SCENARIO B - ENHANCED - LLM INTEGRATION
-// Fireworks AI (Kimi K2.7) client for edge-case compliance reasoning.
+// Fireworks AI (Deepseek v4 Flash) client for edge-case compliance reasoning.
 // Architecture principle: deterministic rules = source of truth.
 // This module is invoked ONLY when the deterministic engine flags an edge case.
 // Any failure path — network, timeout, schema mismatch, low confidence —
@@ -60,7 +60,7 @@ export interface LLMInvocationResult {
 // ---------------------------------------------------------------------------
 
 // SCENARIO B - ENHANCED - SYSTEM PROMPT
-// Kept intentionally compact for kimi-k2p7-code (reasoning model).
+// Kept intentionally compact for Deepseek v4 Flash (reasoning model).
 // A long prompt causes the model to leak its chain-of-thought into content.
 // All governance context is in the user message via formatContextAsPrompt().
 const SYSTEM_PROMPT = `You are a JSON API for BNH compliance assessment. Output ONLY a raw JSON object — no prose, no markdown, no explanation, no text before or after the JSON.
@@ -89,8 +89,7 @@ Required output schema — start with { and end with }:
 // SCENARIO B - ENHANCED - LLM INTEGRATION — Fireworks API client
 // ---------------------------------------------------------------------------
 
-// Kimi K2.7 pricing (Fireworks, June 2026): $0.89/M input, $2.89/M output tokens.
-// Adjust these constants if Fireworks updates pricing.
+// Fireworks pricing (June 2026): adjust these constants if Fireworks updates model costs.
 const COST_PER_INPUT_TOKEN = 0.89 / 1_000_000;
 const COST_PER_OUTPUT_TOKEN = 2.89 / 1_000_000;
 
@@ -121,7 +120,7 @@ function loadConfig(): FireworksConfig {
       "https://api.fireworks.ai/inference/v1",
     modelId:
       process.env.FIREWORKS_MODEL_ID ??
-      "accounts/fireworks/models/kimi-k2p7-code",
+      "accounts/fireworks/models/deepseek-v4-flash",
     temperature: parseFloat(process.env.LLM_TEMPERATURE ?? "0.3"),
     maxTokens: parseInt(process.env.LLM_MAX_TOKENS ?? "250", 10),
     topP: parseFloat(process.env.LLM_TOP_P ?? "0.85"),
@@ -189,7 +188,7 @@ export class FireworksLLMClient {
             model: this.cfg.modelId,
             temperature: this.cfg.temperature,
             // SCENARIO B - ENHANCED - LLM INTEGRATION
-            // kimi-k2p7-code is a reasoning model: its chain-of-thought
+            // Deepseek v4 Flash is a reasoning-friendly model: its chain-of-thought
             // consumes tokens before the JSON output. 1500 gives enough
             // headroom for reasoning + the ~250-token JSON response.
             max_tokens: 1500,

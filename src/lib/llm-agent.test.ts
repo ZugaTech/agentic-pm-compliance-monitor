@@ -67,7 +67,7 @@ const baseContext: LLMComplianceContext = {
 
 function setEnv(): void {
   process.env.FIREWORKS_API_KEY = "test-key-abc123";
-  process.env.FIREWORKS_MODEL_ID = "accounts/fireworks/models/kimi-k2-7";
+  process.env.FIREWORKS_MODEL_ID = "accounts/fireworks/models/deepseek-v4-flash";
   process.env.LLM_TEMPERATURE = "0.3";
   process.env.LLM_MAX_TOKENS = "250";
   process.env.LLM_TOP_P = "0.85";
