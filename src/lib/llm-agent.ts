@@ -106,6 +106,7 @@ const COST_PER_OUTPUT_TOKEN = 2.89 / 1_000_000;
 
 interface FireworksConfig {
   apiKey: string;
+  apiBaseUrl: string;
   modelId: string;
   temperature: number;
   maxTokens: number;
@@ -125,6 +126,9 @@ function loadConfig(): FireworksConfig {
   }
   return {
     apiKey,
+    apiBaseUrl:
+      process.env.FIREWORKS_API_BASE_URL ??
+      "https://api.fireworks.ai/inference/v1",
     modelId:
       process.env.FIREWORKS_MODEL_ID ??
       "accounts/fireworks/models/kimi-k2-7",
@@ -181,9 +185,8 @@ export class FireworksLLMClient {
     );
 
     try {
-      const response = await fetch(
-        "https://api.fireworks.ai/inference/v1/chat/completions",
-        {
+      const endpoint = `${this.cfg.apiBaseUrl.replace(/\/$/, "")}/chat/completions`;
+      const response = await fetch(endpoint, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

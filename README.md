@@ -47,22 +47,22 @@ Decision source is logged for every assessment as `deterministic`, `llm-enhanced
 
 ## Files
 
-| File                        | Purpose                                      |
-| --------------------------- | -------------------------------------------- |
-| `design-document.md`        | One-page institutional design document       |
-| `.env.template`             | Environment variable template                |
-| `src/index.ts`              | Entry point with CLI (`seed`, `tick`, `override`)
-| `src/agent.ts`              | Core deterministic agent loop                 |
-| `src/tools.ts`              | Read, Evaluate, Act, Override tools           |
+| File                        | Purpose                                                   |
+| --------------------------- | --------------------------------------------------------- |
+| `design-document.md`        | One-page institutional design document                    |
+| `.env.template`             | Environment variable template                             |
+| `src/index.ts`              | Entry point with CLI (`seed`, `tick`, `override`)         |
+| `src/agent.ts`              | Core deterministic agent loop                             |
+| `src/tools.ts`              | Read, Evaluate, Act, Override tools                       |
 | `src/data-source.ts`        | Simulated JSON deliverable repository + failure injection |
-| `src/memory.ts`             | Audit trail and alert history                 |
-| `src/config.ts`             | Tunable agent configuration                   |
-| `src/types.ts`              | Strict domain types                           |
-| `src/lib/llm-agent.ts`      | Fireworks API client, Zod schemas, singleton  |
-| `src/agent-hybrid.ts`       | Hybrid assessment loop                        |
-| `src/tests/agent.test.ts`   | Deterministic unit tests                      |
-| `src/lib/llm-agent.test.ts` | Fireworks client unit tests (mocked fetch)    |
-| `src/agent-hybrid.test.ts`  | Hybrid integration tests                      |
+| `src/memory.ts`             | Audit trail and alert history                             |
+| `src/config.ts`             | Tunable agent configuration                               |
+| `src/types.ts`              | Strict domain types                                       |
+| `src/lib/llm-agent.ts`      | Fireworks API client, Zod schemas, singleton              |
+| `src/agent-hybrid.ts`       | Hybrid assessment loop                                    |
+| `src/tests/agent.test.ts`   | Deterministic unit tests                                  |
+| `src/lib/llm-agent.test.ts` | Fireworks client unit tests (mocked fetch)                |
+| `src/agent-hybrid.test.ts`  | Hybrid integration tests                                  |
 
 ## Quick Start
 
