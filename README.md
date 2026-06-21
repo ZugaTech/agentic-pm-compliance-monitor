@@ -92,19 +92,19 @@ cp .env.template .env
 
 ## Environment Variables
 
-| Variable                   | Default                                 | Description                                       |
-| -------------------------- | --------------------------------------- | ------------------------------------------------- |
-| `FIREWORKS_API_KEY`        | —                                       | Required                                          |
-| `FIREWORKS_API_BASE_URL`   | `https://api.fireworks.ai/inference/v1` | Fireworks inference API base URL                  |
+| Variable                   | Default                                       | Description                                       |
+| -------------------------- | --------------------------------------------- | ------------------------------------------------- |
+| `FIREWORKS_API_KEY`        | —                                             | Required                                          |
+| `FIREWORKS_API_BASE_URL`   | `https://api.fireworks.ai/inference/v1`       | Fireworks inference API base URL                  |
 | `FIREWORKS_MODEL_ID`       | `accounts/fireworks/models/deepseek-v4-flash` | Model identifier                                  |
-| `LLM_TEMPERATURE`          | `0.3`                                   | Low temperature for deterministic-leaning outputs |
-| `LLM_MAX_TOKENS`           | `250`                                   | Capped to keep responses concise and cost-bounded |
-| `LLM_TOP_P`                | `0.85`                                  | Nucleus sampling                                  |
-| `LLM_FREQUENCY_PENALTY`    | `0.1`                                   | Reduces repetition                                |
-| `LLM_PRESENCE_PENALTY`     | `0.05`                                  | Mild topic novelty encouragement                  |
-| `LLM_CONFIDENCE_THRESHOLD` | `0.75`                                  | Below this, fall back to deterministic            |
-| `LLM_REQUEST_TIMEOUT_MS`   | `5000`                                  | Hard timeout per LLM call                         |
-| `LLM_LOG_LEVEL`            | `info`                                  | Logging verbosity                                 |
+| `LLM_TEMPERATURE`          | `0.3`                                         | Low temperature for deterministic-leaning outputs |
+| `LLM_MAX_TOKENS`           | `250`                                         | Capped to keep responses concise and cost-bounded |
+| `LLM_TOP_P`                | `0.85`                                        | Nucleus sampling                                  |
+| `LLM_FREQUENCY_PENALTY`    | `0.1`                                         | Reduces repetition                                |
+| `LLM_PRESENCE_PENALTY`     | `0.05`                                        | Mild topic novelty encouragement                  |
+| `LLM_CONFIDENCE_THRESHOLD` | `0.75`                                        | Below this, fall back to deterministic            |
+| `LLM_REQUEST_TIMEOUT_MS`   | `5000`                                        | Hard timeout per LLM call                         |
+| `LLM_LOG_LEVEL`            | `info`                                        | Logging verbosity                                 |
 
 ## Guardrails
 
