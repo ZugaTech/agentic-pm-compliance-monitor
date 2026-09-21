@@ -56,14 +56,14 @@ export interface LLMInvocationResult {
 
 // ---------------------------------------------------------------------------
 // SCENARIO B - ENHANCED - SYSTEM PROMPT
-// Grounded in BNH institutional context. Source discipline mirrors Scenario C.
+// Grounded in NBH institutional context. Source discipline mirrors Scenario C.
 // ---------------------------------------------------------------------------
 
 // SCENARIO B - ENHANCED - SYSTEM PROMPT
 // Kept intentionally compact for Deepseek v4 Flash (reasoning model).
 // A long prompt causes the model to leak its chain-of-thought into content.
 // All governance context is in the user message via formatContextAsPrompt().
-const SYSTEM_PROMPT = `You are a JSON API for BNH compliance assessment. Output ONLY a raw JSON object — no prose, no markdown, no explanation, no text before or after the JSON.
+const SYSTEM_PROMPT = `You are a JSON API for NBH compliance assessment. Output ONLY a raw JSON object — no prose, no markdown, no explanation, no text before or after the JSON.
 
 Rules:
 - Reason ONLY from facts in the input. Do not infer missing fields.
@@ -144,10 +144,10 @@ export class FireworksLLMClient {
   }
 
   // SCENARIO B - ENHANCED - LLM INTEGRATION — format context as user message
-  // BNH context is in the user message, not the system prompt, so the
+  // NBH context is in the user message, not the system prompt, so the
   // reasoning model sees it as part of the problem to solve.
   formatContextAsPrompt(context: LLMComplianceContext): string {
-    return `BNH PM Compliance Assessment\n\nContext:\n${JSON.stringify(context, null, 2)}\n\nAssess this deliverable and output ONLY the JSON object.`;
+    return `NBH PM Compliance Assessment\n\nContext:\n${JSON.stringify(context, null, 2)}\n\nAssess this deliverable and output ONLY the JSON object.`;
   }
 
   // SCENARIO B - ENHANCED - LLM INTEGRATION — main invocation method

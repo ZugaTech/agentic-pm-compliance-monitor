@@ -6,7 +6,7 @@ import { AgentConfig } from "./types";
 
 export { AgentConfig };
 export const config: AgentConfig = {
-  timezone: "Africa/Lagos", // BNH operational timezone for this scenario
+  timezone: "Africa/Lagos", // operational timezone for this scenario
   riskWindowDays: 3, // deadline within 3 days => AT_RISK
   escalationThrottleMinutes: 60, // do not re-escalate the same item within 1 hour
   loopIntervalMs: 6 * 60 * 60 * 1000, // 6 hours in production; overridden in tests

@@ -55,7 +55,7 @@ async function main(): Promise<void> {
   }
 
   // Default: run the continuous agent loop.
-  console.log("Starting BNH Agentic PM Compliance Monitor...");
+  console.log("Starting NBH Agentic PM Compliance Monitor...");
   await loadDeliverables();
 
   // Graceful shutdown on Ctrl+C.

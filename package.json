@@ -1,7 +1,7 @@
 {
-  "name": "bnh-agentic-pm-compliance",
+  "name": "nbh-agentic-pm-compliance",
   "version": "1.0.0",
-  "description": "Agentic PM Compliance Monitoring System for Brendan Nicholas Holdings (Scenario B)",
+  "description": "Agentic PM Compliance Monitoring System for Northbridge Holdings",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
@@ -14,7 +14,7 @@
   },
   "keywords": ["agentic", "compliance", "pm", "monitoring"],
   "author": "Scenario B Candidate",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "dependencies": {
     "zod": "^3.23.0"
   },

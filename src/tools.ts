@@ -217,7 +217,7 @@ export async function sendEscalation(
     `Evaluated at: ${assessment.evaluatedAt}`,
   ].join("\n");
 
-  console.log(`[ESCALATION] To: CoS <cos@bnh.com>`);
+  console.log(`[ESCALATION] To: CoS <cos@nbh.com>`);
   console.log(`[ESCALATION] Subject: ${subject}`);
   console.log(`[ESCALATION] Body:\n${body}`);
 
@@ -229,7 +229,7 @@ export async function sendWarning(
   d: Deliverable,
   assessment: Assessment
 ): Promise<NotificationResult> {
-  console.log(`[WARNING] To: ${d.pmName} <${d.pmName.toLowerCase().replace(/\s/g, ".")}@bnh.com>`);
+  console.log(`[WARNING] To: ${d.pmName} <${d.pmName.toLowerCase().replace(/\s/g, ".")}@nbh.com>`);
   console.log(`[WARNING] Subject: AT_RISK DELIVERABLE: ${d.taskName}`);
   console.log(`[WARNING] Body: ${assessment.reason}`);
 

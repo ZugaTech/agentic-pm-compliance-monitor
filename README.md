@@ -1,6 +1,6 @@
-# BNH Agentic PM Compliance Monitor — Scenario B
+# Agentic PM Compliance Monitor — Scenario B
 
-A production-styled, framework-agnostic implementation of the **Agentic PM Compliance Monitoring System** for Brendan Nicholas Holdings (BNH) System 5.
+A production-styled, framework-agnostic implementation of the **Agentic PM Compliance Monitoring System** for Northbridge Holdings (NBH) System 5.
 
 ## What It Does
 
